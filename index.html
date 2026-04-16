@@ -180,7 +180,7 @@
     }
 
     /* List */
-    .list-section { padding: 0 14px 24px; }
+    .list-section { padding: 0 14px 90px; }
     .scans-list { display: flex; flex-direction: column; gap: 8px; }
     .scan-item {
       background: white;
@@ -235,6 +235,32 @@
     .empty-state { text-align: center; padding: 36px 20px; color: #94a3b8; }
     .empty-state .icon { font-size: 3rem; margin-bottom: 12px; display: block; }
     .empty-state p { font-size: 0.9rem; line-height: 1.6; }
+
+    /* Bottom export bar */
+    .export-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: white;
+      padding: 10px 14px 14px;
+      display: flex;
+      gap: 8px;
+      box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
+      z-index: 300;
+    }
+    .exp-btn {
+      flex: 1;
+      padding: 13px 8px;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .exp-btn:active { transform: scale(0.96); }
+    .exp-btn-green  { background: #16a34a; color: white; }
+    .exp-btn-outline{ background: white; color: #475569; border: 2px solid #e2e8f0; }
+    .exp-btn-red    { background: #dc2626; color: white; }
 
     /* Toast */
     .toast {
@@ -357,6 +383,13 @@
 <div class="section-label" id="list-label">Sessione corrente</div>
 <div class="list-section">
   <div class="scans-list" id="scans-list"></div>
+</div>
+
+<!-- Barra export fissa in fondo -->
+<div class="export-bar">
+  <button class="exp-btn exp-btn-green" style="flex:2" onclick="exportExcel()">&#x1F4CA; Excel</button>
+  <button class="exp-btn exp-btn-outline" onclick="exportCSV()">CSV</button>
+  <button class="exp-btn exp-btn-red" onclick="clearAll()">&#x1F5D1;</button>
 </div>
 
 <!-- Modal duplicato -->
@@ -614,6 +647,48 @@ function renderList() {
 function deleteItem(i) {
   scans.splice(i, 1);
   renderList();
+}
+
+function exportExcel() {
+  if (!scans.length) { showToast('Nessun dato da esportare'); return; }
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const stamp = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) +
+                '_' + pad(now.getHours()) + '-' + pad(now.getMinutes()) + '-' + pad(now.getSeconds());
+  const rows = [['#', 'Codice', 'Tipo', 'Quantita\'', 'Prima scansione', 'Ultima scansione']];
+  [...scans].reverse().forEach((s, i) =>
+    rows.push([i + 1, s.code, s.type, s.qty, s.time, s.lastTime || s.time])
+  );
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 5 }, { wch: 32 }, { wch: 14 }, { wch: 10 }, { wch: 22 }, { wch: 22 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Scansioni');
+  XLSX.writeFile(wb, 'scansioni_' + stamp + '.xlsx');
+  showToast('Excel scaricato!');
+}
+
+function exportCSV() {
+  if (!scans.length) { showToast('Nessun dato da esportare'); return; }
+  const lines = ['#,Codice,Tipo,Quantita\',Prima scansione,Ultima scansione'];
+  [...scans].reverse().forEach((s, i) => {
+    lines.push([i+1, s.code, s.type, s.qty, s.time, s.lastTime || s.time]
+      .map(v => '"' + String(v).replace(/"/g,'""') + '"').join(','));
+  });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' }));
+  a.download = 'scansioni_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  showToast('CSV scaricato!');
+}
+
+function clearAll() {
+  if (!scans.length) return;
+  if (confirm('Cancellare tutte le ' + scans.reduce((s,x)=>s+x.qty,0) + ' scansioni della sessione?')) {
+    scans = [];
+    renderList();
+    document.getElementById('val-saved').textContent  = '—';
+    document.getElementById('type-saved').textContent = '';
+  }
 }
 
 // UI helpers
