@@ -7,10 +7,8 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1d4ed8">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background: #f1f5f9;
@@ -18,7 +16,7 @@
       color: #1e293b;
     }
 
-    /* ── Header ── */
+    /* Header */
     header {
       background: #1d4ed8;
       color: white;
@@ -42,111 +40,118 @@
       font-weight: 600;
     }
 
-    /* ── Camera ── */
-    .camera-wrap {
-      padding: 12px 14px 0;
-      display: none;
-    }
+    /* Camera */
+    .camera-wrap { padding: 12px 14px 0; display: none; }
     .camera-wrap.active { display: block; }
-
-    #reader {
-      border-radius: 14px;
-      overflow: hidden;
-      background: #000;
-    }
+    #reader { border-radius: 14px; overflow: hidden; background: #000; }
     #reader video { border-radius: 14px; width: 100% !important; }
     #reader__dashboard { display: none !important; }
 
-    /* ── SCAN button ── */
-    .scan-btn-wrap {
-      padding: 14px;
-      display: flex;
-      justify-content: center;
-    }
-
-    #scan-btn {
-      width: 100%;
-      max-width: 340px;
-      padding: 18px;
-      border: none;
-      border-radius: 16px;
-      font-size: 1.15rem;
-      font-weight: 800;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      transition: transform 0.1s, box-shadow 0.2s;
-      background: #1d4ed8;
-      color: white;
-      box-shadow: 0 4px 16px rgba(29,78,216,0.4);
-    }
-    #scan-btn.active {
-      background: #dc2626;
-      box-shadow: 0 4px 16px rgba(220,38,38,0.4);
-    }
-    #scan-btn:active { transform: scale(0.97); }
-
-    /* ── Displays ── */
+    /* Displays */
     .displays {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      padding: 0 14px 14px;
+      padding: 12px 14px;
     }
-
     .display-box {
       background: #1e293b;
       border-radius: 14px;
       padding: 12px 14px;
-      min-height: 82px;
+      min-height: 80px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-
     .display-label {
-      font-size: 0.7rem;
-      font-weight: 600;
+      font-size: 0.68rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #64748b;
+      color: #475569;
       margin-bottom: 6px;
     }
-
     .display-value {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      color: #f8fafc;
+      color: #94a3b8;
       font-family: 'Courier New', monospace;
       word-break: break-all;
       line-height: 1.3;
-      min-height: 24px;
     }
+    .display-value.fresh { color: #4ade80; }
+    .display-value.saved-val { color: #e2e8f0; }
+    .display-type { font-size: 0.65rem; color: #334155; margin-top: 4px; }
+    .display-label.green { color: #4ade80; }
+    .display-label.blue  { color: #60a5fa; }
 
-    /* rilevato display: verde quando attivo */
-    .display-box.detected .display-label { color: #4ade80; }
-    .display-box.detected .display-value { color: #4ade80; }
-
-    /* ultimo salvato: blu accent */
-    .display-box .display-label.saved { color: #60a5fa; }
-    .display-box .display-value.saved  { color: #e2e8f0; }
-
-    .display-type {
-      font-size: 0.68rem;
-      color: #475569;
-      margin-top: 4px;
+    /* Counter bar */
+    .counter-bar {
+      margin: 0 14px 12px;
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+    .counter-label { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .counter-value { font-size: 2rem; font-weight: 900; color: #f8fafc; font-family: 'Courier New', monospace; line-height: 1; }
+    .counter-sub   { font-size: 0.72rem; color: #475569; margin-top: 2px; }
 
-    /* ── Separator ── */
+    /* Buttons */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 14px 12px;
+    }
+    .btn-scan-big {
+      grid-column: 1 / -1;
+      padding: 20px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      background: #16a34a;
+      color: white;
+      box-shadow: 0 4px 18px rgba(22,163,74,0.4);
+      transition: transform 0.1s, opacity 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .btn-scan-big:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .btn-scan-big:not(:disabled):active { transform: scale(0.97); }
+
+    .btn-sm {
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+    .btn-sm:active { transform: scale(0.96); }
+    .btn-avvia { background: #1d4ed8; color: white; box-shadow: 0 3px 12px rgba(29,78,216,0.35); }
+    .btn-avvia.active { background: #64748b; box-shadow: none; }
+    .btn-ferma { background: #dc2626; color: white; box-shadow: 0 3px 12px rgba(220,38,38,0.3); }
+    .btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Manual */
     .section-label {
-      padding: 4px 14px 8px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      padding: 2px 14px 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
-    /* ── Manual entry ── */
     .manual-row {
       padding: 0 14px 12px;
       display: flex;
@@ -174,11 +179,9 @@
       cursor: pointer;
     }
 
-    /* ── List ── */
-    .list-section { padding: 0 14px 100px; }
-
+    /* List */
+    .list-section { padding: 0 14px 24px; }
     .scans-list { display: flex; flex-direction: column; gap: 8px; }
-
     .scan-item {
       background: white;
       border-radius: 12px;
@@ -193,19 +196,18 @@
       from { opacity: 0; transform: translateY(-8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    .scan-icon {
-      width: 36px; height: 36px;
-      background: #eff6ff;
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
+    .scan-num {
+      width: 24px;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 700;
+      text-align: center;
       flex-shrink: 0;
     }
     .scan-info { flex: 1; min-width: 0; }
     .scan-code {
-      font-size: 0.92rem;
-      font-weight: 600;
+      font-size: 0.9rem;
+      font-weight: 700;
       color: #1e293b;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -223,71 +225,32 @@
       flex-shrink: 0;
     }
     .delete-btn {
-      background: none;
-      border: none;
-      color: #cbd5e1;
-      cursor: pointer;
-      padding: 6px;
-      font-size: 1rem;
+      background: none; border: none;
+      color: #cbd5e1; cursor: pointer;
+      padding: 6px; font-size: 1rem;
       border-radius: 8px;
       transition: color 0.15s, background 0.15s;
-      flex-shrink: 0;
     }
     .delete-btn:active { color: #ef4444; background: #fee2e2; }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: #94a3b8;
-    }
+    .empty-state { text-align: center; padding: 36px 20px; color: #94a3b8; }
     .empty-state .icon { font-size: 3rem; margin-bottom: 12px; display: block; }
     .empty-state p { font-size: 0.9rem; line-height: 1.6; }
 
-    /* ── Export bar ── */
-    .export-bar {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: white;
-      padding: 10px 14px 14px;
-      display: flex;
-      gap: 10px;
-      box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
-    }
-    .btn {
-      flex: 1;
-      padding: 13px;
-      border: none;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.1s;
-    }
-    .btn:active { transform: scale(0.97); }
-    .btn-success { background: #16a34a; color: white; }
-    .btn-outline  { background: white; color: #475569; border: 2px solid #e2e8f0; }
-    .btn-danger   { background: #dc2626; color: white; }
-
-    /* ── Toast ── */
+    /* Toast */
     .toast {
       position: fixed;
-      bottom: 80px; left: 50%;
+      bottom: 24px; left: 50%;
       transform: translateX(-50%) translateY(10px);
-      background: #1e293b;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      z-index: 999;
-      opacity: 0;
+      background: #1e293b; color: white;
+      padding: 10px 20px; border-radius: 30px;
+      font-size: 0.85rem; font-weight: 500;
+      z-index: 999; opacity: 0;
       transition: opacity 0.25s, transform 0.25s;
-      white-space: nowrap;
-      pointer-events: none;
+      white-space: nowrap; pointer-events: none;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ── Flash ── */
+    /* Flash */
     .flash {
       position: fixed; inset: 0;
       background: rgba(255,255,255,0.35);
@@ -295,6 +258,42 @@
       transition: opacity 0.12s; z-index: 200;
     }
     .flash.active { opacity: 1; }
+
+    /* Modal duplicato */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 340px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      animation: popIn 0.2s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .modal h2 { font-size: 1.1rem; font-weight: 800; color: #dc2626; margin-bottom: 10px; }
+    .modal p  { font-size: 0.9rem; color: #475569; line-height: 1.5; margin-bottom: 20px; }
+    .modal strong { color: #1e293b; font-family: 'Courier New', monospace; }
+    .modal-btns { display: flex; flex-direction: column; gap: 10px; }
+    .modal-btn {
+      padding: 14px; border: none;
+      border-radius: 12px;
+      font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    }
+    .modal-btn-yes { background: #dc2626; color: white; }
+    .modal-btn-no  { background: #f1f5f9; color: #475569; }
   </style>
 </head>
 <body>
@@ -305,33 +304,48 @@
   <div class="badge" id="count-badge">0 scansioni</div>
 </header>
 
-<!-- Camera (visibile solo durante scan) -->
+<!-- Camera -->
 <div class="camera-wrap" id="camera-wrap">
   <div id="reader"></div>
 </div>
 
-<!-- Pulsante SCAN -->
-<div class="scan-btn-wrap">
-  <button id="scan-btn" onclick="toggleScan()">&#x25B6; AVVIA SCAN</button>
-</div>
-
-<!-- Due display -->
+<!-- Display rilevato + ultimo salvato -->
 <div class="displays">
-  <!-- Display 1: codice rilevato -->
-  <div class="display-box" id="display-detected">
-    <div class="display-label">Codice rilevato</div>
+  <div class="display-box">
+    <div class="display-label" id="lbl-detected">Codice rilevato</div>
     <div class="display-value" id="val-detected">—</div>
     <div class="display-type" id="type-detected"></div>
   </div>
-  <!-- Display 2: ultimo salvato -->
   <div class="display-box">
-    <div class="display-label saved">Ultimo salvato</div>
-    <div class="display-value saved" id="val-saved">—</div>
+    <div class="display-label blue">Ultimo salvato</div>
+    <div class="display-value saved-val" id="val-saved">—</div>
     <div class="display-type" id="type-saved"></div>
   </div>
 </div>
 
-<!-- Inserimento manuale -->
+<!-- Contatore sessione -->
+<div class="counter-bar">
+  <div>
+    <div class="counter-label">Scansioni sessione</div>
+    <div class="counter-sub">si azzera con Ferma &amp; Salva</div>
+  </div>
+  <div class="counter-value" id="session-counter">0</div>
+</div>
+
+<!-- Tasti -->
+<div class="btn-row">
+  <button class="btn-scan-big" id="btn-scansiona" onclick="captureCode()" disabled>
+    &#x1F4F8; SCANSIONA
+  </button>
+  <button class="btn-sm btn-avvia" id="btn-avvia" onclick="toggleCamera()">
+    &#x25B6; Avvia Cam
+  </button>
+  <button class="btn-sm btn-ferma" id="btn-ferma" onclick="ferma()" disabled>
+    &#x23F9; Ferma &amp; Salva
+  </button>
+</div>
+
+<!-- Manuale -->
 <div class="section-label">Inserimento manuale</div>
 <div class="manual-row">
   <input type="text" id="manual-code" placeholder="Codice manuale..."
@@ -339,228 +353,254 @@
   <button onclick="addManual()">+</button>
 </div>
 
-<!-- Lista scansioni -->
-<div class="section-label" id="list-label">Lista scansioni</div>
+<!-- Lista sessione -->
+<div class="section-label" id="list-label">Sessione corrente</div>
 <div class="list-section">
   <div class="scans-list" id="scans-list"></div>
 </div>
 
-<!-- Bottom export bar -->
-<div class="export-bar">
-  <button class="btn btn-success" style="flex:2" onclick="exportExcel()">&#x1F4CA; Esporta Excel</button>
-  <button class="btn btn-outline" style="flex:1" onclick="exportCSV()">CSV</button>
-  <button class="btn btn-danger"  style="flex:1" onclick="clearAll()">&#x1F5D1;</button>
+<!-- Modal duplicato -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h2>&#x26A0; Codice duplicato</h2>
+    <p id="modal-msg">Questo codice e' gia' presente nella lista.</p>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-yes" onclick="confirmDuplicate(true)">
+        &#x2795; Memorizza comunque
+      </button>
+      <button class="modal-btn modal-btn-no" onclick="confirmDuplicate(false)">
+        &#x274C; Non memorizzare
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="flash" id="flash"></div>
 <div class="toast" id="toast"></div>
 
-<!-- Librerie -->
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
 <script>
-// ── State ──────────────────────────────────────────────────────────────────
-let html5QrCode = null;
-let scanning    = false;
-let lastCode    = '';
-let lastCodeTS  = 0;
-const DEBOUNCE_MS = 1800;
+// Stato
+let html5QrCode      = null;
+let cameraOn         = false;
+let currentDetected  = { code: '', type: '' };
+let pendingDuplicate = null;
+let freshTimer       = null;
+let scans            = [];
 
-let detectedClearTimer = null;
-
-let scans = [];
-try { scans = JSON.parse(localStorage.getItem('barscans') || '[]'); } catch(e) {}
-
-// ── Toggle scan ────────────────────────────────────────────────────────────
-async function toggleScan() {
-  if (scanning) {
-    await stopScanner();
-  } else {
-    await startScanner();
-  }
+// Camera toggle
+async function toggleCamera() {
+  cameraOn ? await stopCamera() : await startCamera();
 }
 
-async function startScanner() {
-  const btn = document.getElementById('scan-btn');
-  btn.disabled = true;
-  btn.textContent = 'Avvio...';
+async function startCamera() {
+  const btnA = document.getElementById('btn-avvia');
+  btnA.disabled = true;
+  btnA.textContent = 'Avvio...';
 
   html5QrCode = new Html5Qrcode('reader', { verbose: false });
-
-  const config = {
-    fps: 12,
-    qrbox: (w, h) => ({ width: Math.min(w, 280), height: Math.min(h * 0.55, 160) }),
-    aspectRatio: 1.5,
-    rememberLastUsedCamera: true,
-    formatsToSupport: [
-      Html5QrcodeSupportedFormats.EAN_13,
-      Html5QrcodeSupportedFormats.EAN_8,
-      Html5QrcodeSupportedFormats.UPC_A,
-      Html5QrcodeSupportedFormats.UPC_E,
-      Html5QrcodeSupportedFormats.CODE_128,
-      Html5QrcodeSupportedFormats.CODE_39,
-      Html5QrcodeSupportedFormats.CODE_93,
-      Html5QrcodeSupportedFormats.QR_CODE,
-      Html5QrcodeSupportedFormats.DATA_MATRIX,
-      Html5QrcodeSupportedFormats.PDF_417,
-      Html5QrcodeSupportedFormats.ITF,
-      Html5QrcodeSupportedFormats.CODABAR,
-    ]
-  };
 
   try {
     await html5QrCode.start(
       { facingMode: 'environment' },
-      config,
-      onScanSuccess,
+      {
+        fps: 15,
+        qrbox: (w, h) => ({ width: Math.min(w, 280), height: Math.min(h * 0.5, 150) }),
+        aspectRatio: 1.5,
+        rememberLastUsedCamera: true,
+        formatsToSupport: [
+          Html5QrcodeSupportedFormats.EAN_13, Html5QrcodeSupportedFormats.EAN_8,
+          Html5QrcodeSupportedFormats.UPC_A,  Html5QrcodeSupportedFormats.UPC_E,
+          Html5QrcodeSupportedFormats.CODE_128, Html5QrcodeSupportedFormats.CODE_39,
+          Html5QrcodeSupportedFormats.CODE_93,  Html5QrcodeSupportedFormats.QR_CODE,
+          Html5QrcodeSupportedFormats.DATA_MATRIX, Html5QrcodeSupportedFormats.PDF_417,
+          Html5QrcodeSupportedFormats.ITF, Html5QrcodeSupportedFormats.CODABAR,
+        ]
+      },
+      onFrameDetected,
       () => {}
     );
-    scanning = true;
+    cameraOn = true;
     document.getElementById('camera-wrap').classList.add('active');
-    btn.disabled = false;
-    btn.textContent = '⏹ FERMA SCAN';
-    btn.classList.add('active');
+    btnA.disabled = false;
+    btnA.textContent = 'Stop Cam';
+    btnA.classList.add('active');
+    document.getElementById('btn-scansiona').disabled = false;
+    document.getElementById('btn-ferma').disabled     = false;
   } catch (err) {
     showToast('Errore camera: ' + (err.message || err));
-    btn.disabled = false;
-    btn.textContent = '▶ AVVIA SCAN';
-    btn.classList.remove('active');
+    btnA.disabled = false;
+    btnA.textContent = 'Avvia Cam';
+    btnA.classList.remove('active');
   }
 }
 
-async function stopScanner() {
+async function stopCamera() {
   if (!html5QrCode) return;
-  try {
-    await html5QrCode.stop();
-    html5QrCode.clear();
-  } catch(e) {}
-  scanning = false;
+  try { await html5QrCode.stop(); html5QrCode.clear(); } catch(e) {}
   html5QrCode = null;
+  cameraOn = false;
   document.getElementById('camera-wrap').classList.remove('active');
-  const btn = document.getElementById('scan-btn');
-  btn.textContent = '▶ AVVIA SCAN';
-  btn.classList.remove('active');
-  btn.disabled = false;
+  const btnA = document.getElementById('btn-avvia');
+  btnA.textContent = 'Avvia Cam';
+  btnA.classList.remove('active');
+  btnA.disabled = false;
+  document.getElementById('btn-scansiona').disabled = true;
+  setDetectedDisplay('—', '', false);
+  currentDetected = { code: '', type: '' };
 }
 
-// ── On scan success ────────────────────────────────────────────────────────
-function onScanSuccess(decodedText, decodedResult) {
-  const now = Date.now();
-  if (decodedText === lastCode && now - lastCodeTS < DEBOUNCE_MS) return;
-  lastCode   = decodedText;
-  lastCodeTS = now;
-
+// La camera aggiorna solo il display "rilevato" — NON salva nulla
+function onFrameDetected(decodedText, decodedResult) {
   let fmt = 'Barcode';
   try { fmt = decodedResult.result.format.formatName; } catch(e) {}
-
-  // Mostra nel display "rilevato"
-  showDetected(decodedText, fmt);
-
-  // Salva
-  addCode(decodedText, fmt);
+  currentDetected = { code: decodedText, type: fmt };
+  setDetectedDisplay(decodedText, fmt, true);
+  clearTimeout(freshTimer);
+  freshTimer = setTimeout(() => setDetectedDisplay(decodedText, fmt, false), 2500);
 }
 
-// ── Display: codice rilevato ───────────────────────────────────────────────
-function showDetected(code, type) {
-  const box  = document.getElementById('display-detected');
-  const val  = document.getElementById('val-detected');
-  const typ  = document.getElementById('type-detected');
-
-  val.textContent = code;
-  typ.textContent = type;
-  box.classList.add('detected');
-
-  clearTimeout(detectedClearTimer);
-  detectedClearTimer = setTimeout(() => {
-    box.classList.remove('detected');
-  }, 3000);
-
-  flashScreen();
-  if (navigator.vibrate) navigator.vibrate(60);
+function setDetectedDisplay(code, type, fresh) {
+  const val = document.getElementById('val-detected');
+  const lbl = document.getElementById('lbl-detected');
+  val.textContent  = code || '—';
+  document.getElementById('type-detected').textContent = type || '';
+  val.classList.toggle('fresh', fresh);
+  lbl.classList.toggle('green', fresh);
 }
 
-// ── Display: ultimo salvato ────────────────────────────────────────────────
-function showLastSaved(code, type) {
-  document.getElementById('val-saved').textContent  = code;
-  document.getElementById('type-saved').textContent = type;
+// SCANSIONA: salva solo quando l'utente preme il tasto
+function captureCode() {
+  if (!currentDetected.code) {
+    showToast('Nessun codice inquadrato — avvicina il codice');
+    return;
+  }
+  const { code, type } = currentDetected;
+  const exists = scans.find(s => s.code === code);
+  if (exists) {
+    pendingDuplicate = { code, type };
+    document.getElementById('modal-msg').innerHTML =
+      'Il codice <strong>' + esc(code) + '</strong> e\' gia\' presente<br>' +
+      '(salvato ' + exists.qty + ' ' + (exists.qty === 1 ? 'volta' : 'volte') + ').';
+    document.getElementById('modal-overlay').classList.add('show');
+  } else {
+    saveCode(code, type, false);
+  }
 }
 
-// ── Data operations ────────────────────────────────────────────────────────
-function save() {
-  localStorage.setItem('barscans', JSON.stringify(scans));
+function confirmDuplicate(doSave) {
+  document.getElementById('modal-overlay').classList.remove('show');
+  if (doSave && pendingDuplicate) {
+    saveCode(pendingDuplicate.code, pendingDuplicate.type, true);
+  } else {
+    showToast('Codice scartato');
+  }
+  pendingDuplicate = null;
 }
 
-function addCode(code, type) {
-  const existing = scans.find(s => s.code === code);
+function saveCode(code, type, isDuplicate) {
   const now = new Date().toLocaleString('it-IT');
-  if (existing) {
+  const existing = scans.find(s => s.code === code);
+  if (existing && isDuplicate) {
     existing.qty++;
     existing.lastTime = now;
   } else {
     scans.unshift({ code, type: type || 'Barcode', time: now, lastTime: now, qty: 1 });
   }
-  save();
-  showLastSaved(code, type);
+  document.getElementById('val-saved').textContent  = code;
+  document.getElementById('type-saved').textContent = type;
+  flashScreen();
+  if (navigator.vibrate) navigator.vibrate(60);
+  showToast('Salvato: ' + code);
   renderList();
 }
 
-function deleteItem(i) {
-  scans.splice(i, 1);
-  save();
-  renderList();
-}
-
-function clearAll() {
-  if (!scans.length) return;
-  if (confirm('Cancellare tutte le scansioni?')) {
+// FERMA & SALVA: stop cam + export Excel con nome univoco + reset sessione
+async function ferma() {
+  await stopCamera();
+  document.getElementById('btn-ferma').disabled = true;
+  if (!scans.length) {
+    showToast('Nessuna scansione in questa sessione');
+    return;
+  }
+  exportSessionExcel();
+  setTimeout(() => {
     scans = [];
-    save();
     renderList();
     document.getElementById('val-saved').textContent  = '—';
     document.getElementById('type-saved').textContent = '';
-  }
+    document.getElementById('session-counter').textContent = '0';
+    document.getElementById('count-badge').textContent = '0 scansioni';
+  }, 600);
 }
 
+function exportSessionExcel() {
+  const now  = new Date();
+  const pad  = n => String(n).padStart(2, '0');
+  const stamp = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) +
+                '_' + pad(now.getHours()) + '-' + pad(now.getMinutes()) + '-' + pad(now.getSeconds());
+
+  const rows = [['#', 'Codice', 'Tipo', 'Quantita\'', 'Prima scansione', 'Ultima scansione']];
+  [...scans].reverse().forEach((s, i) =>
+    rows.push([i + 1, s.code, s.type, s.qty, s.time, s.lastTime || s.time])
+  );
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 5 }, { wch: 32 }, { wch: 14 }, { wch: 10 }, { wch: 22 }, { wch: 22 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Scansioni');
+  XLSX.writeFile(wb, 'scansioni_' + stamp + '.xlsx');
+  showToast('Excel salvato: ' + stamp);
+}
+
+// Inserimento manuale
 function addManual() {
   const inp  = document.getElementById('manual-code');
   const code = inp.value.trim();
   if (!code) { inp.focus(); return; }
-  showDetected(code, 'Manuale');
-  addCode(code, 'Manuale');
+  const exists = scans.find(s => s.code === code);
+  if (exists) {
+    pendingDuplicate = { code, type: 'Manuale' };
+    document.getElementById('modal-msg').innerHTML =
+      'Il codice <strong>' + esc(code) + '</strong> e\' gia\' presente.';
+    document.getElementById('modal-overlay').classList.add('show');
+  } else {
+    saveCode(code, 'Manuale', false);
+  }
   inp.value = '';
 }
 
-// ── Render list ────────────────────────────────────────────────────────────
+// Render lista
 function esc(str) {
-  return String(str)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function renderList() {
   const list  = document.getElementById('scans-list');
   const badge = document.getElementById('count-badge');
   const label = document.getElementById('list-label');
+  const counter = document.getElementById('session-counter');
 
   const total = scans.reduce((s, x) => s + x.qty, 0);
-  badge.textContent = total + (total === 1 ? ' scansione' : ' scansioni');
-  label.textContent = scans.length
-    ? 'Lista scansioni (' + scans.length + ' codici unici)'
-    : 'Lista scansioni';
+  badge.textContent   = total + (total === 1 ? ' scansione' : ' scansioni');
+  counter.textContent = total;
+  label.textContent   = scans.length
+    ? 'Sessione corrente — ' + scans.length + ' codici unici'
+    : 'Sessione corrente';
 
   if (!scans.length) {
     list.innerHTML = `
       <div class="empty-state">
         <span class="icon">&#x1F4E6;</span>
-        <p>Premi AVVIA SCAN e inquadra<br>un codice a barre</p>
+        <p>Avvia la camera, inquadra un codice<br>poi premi <strong>SCANSIONA</strong> per salvarlo</p>
       </div>`;
     return;
   }
 
   list.innerHTML = scans.map((s, i) => `
     <div class="scan-item">
-      <div class="scan-icon">&#x1F4CB;</div>
+      <div class="scan-num">${scans.length - i}</div>
       <div class="scan-info">
         <div class="scan-code">${esc(s.code)}</div>
         <div class="scan-meta">${esc(s.type)} &middot; ${esc(s.time)}</div>
@@ -571,40 +611,18 @@ function renderList() {
   `).join('');
 }
 
-// ── Export ─────────────────────────────────────────────────────────────────
-function exportExcel() {
-  if (!scans.length) { showToast('Nessun dato da esportare'); return; }
-  const rows = [['Codice', 'Tipo', 'Quantità', 'Prima scansione', 'Ultima scansione']];
-  scans.forEach(s => rows.push([s.code, s.type, s.qty, s.time, s.lastTime || s.time]));
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols'] = [{ wch: 32 }, { wch: 14 }, { wch: 12 }, { wch: 22 }, { wch: 22 }];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Scansioni');
-  XLSX.writeFile(wb, 'scansioni_' + new Date().toISOString().slice(0,10) + '.xlsx');
-  showToast('&#x1F4CA; Excel scaricato!');
+function deleteItem(i) {
+  scans.splice(i, 1);
+  renderList();
 }
 
-function exportCSV() {
-  if (!scans.length) { showToast('Nessun dato da esportare'); return; }
-  const lines = ['Codice,Tipo,Quantità,Prima scansione,Ultima scansione'];
-  scans.forEach(s => {
-    lines.push([s.code, s.type, s.qty, s.time, s.lastTime || s.time]
-      .map(v => '"' + String(v).replace(/"/g,'""') + '"').join(','));
-  });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' }));
-  a.download = 'scansioni_' + new Date().toISOString().slice(0,10) + '.csv';
-  a.click();
-  showToast('CSV scaricato!');
-}
-
-// ── UI helpers ─────────────────────────────────────────────────────────────
-function showToast(html) {
+// UI helpers
+function showToast(msg) {
   const t = document.getElementById('toast');
-  t.innerHTML = html;
+  t.textContent = msg;
   t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.remove('show'), 2600);
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
 function flashScreen() {
@@ -613,18 +631,9 @@ function flashScreen() {
   setTimeout(() => f.classList.remove('active'), 140);
 }
 
-// ── Service Worker ─────────────────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 
-// ── Init ───────────────────────────────────────────────────────────────────
 renderList();
-
-// ripristina ultimo salvato da localStorage
-if (scans.length) {
-  showLastSaved(scans[0].code, scans[0].type);
-}
 </script>
 </body>
 </html>
